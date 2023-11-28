@@ -14,12 +14,12 @@ public_users.post("/register", (req, res) => {
       users.push({ username: username, password: password });
       return res
         .status(200)
-        .json({ message: "User successfully registred. Now you can login" });
+        .json({ message: "Customer successfully registered. Now you can login." });
     } else {
-      return res.status(404).json({ message: "User already exists!" });
+      return res.status(404).json({ message: "Customer already exists!" });
     }
   }
-  return res.status(404).json({ message: "Unable to register user." });
+  return res.status(404).json({ message: "Unable to register customer." });
 });
 
 // Get the book list available in the shop

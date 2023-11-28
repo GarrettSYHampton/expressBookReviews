@@ -48,7 +48,7 @@ regd_users.post("/login", (req, res) => {
       accessToken,
       username,
     };
-    return res.status(200).send("User successfully logged in");
+    return res.status(200).send("Customer successfully logged in.");
   } else {
     return res
       .status(208)
