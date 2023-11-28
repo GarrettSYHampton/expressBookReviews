@@ -65,11 +65,10 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   if (accessToken && username) {
     if (review) {
       if (books[isbn]) {
-        if (books[isbn].reviews) {
-          books[isbn].reviews.push({ username: username, review: review });
-        } else {
-          books[isbn].reviews = [{ username: username, review: review }];
-        }
+        books[isbn].reviews[Object.keys(books[isbn].reviews).length] = {
+          username: username,
+          review: review,
+        };
         return res.status(200).json({ message: "Review added successfully" });
       } else {
         return res.status(404).json({ message: "Book not found" });
