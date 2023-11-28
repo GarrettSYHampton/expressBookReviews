@@ -4,6 +4,12 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
+async function wait(ms) {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, ms);
+  });
+}
+
 // Allow a user to register
 public_users.post("/register", (req, res) => {
   const username = req.body.username;
@@ -12,9 +18,9 @@ public_users.post("/register", (req, res) => {
   if (username && password) {
     if (!isValid(username)) {
       users.push({ username: username, password: password });
-      return res
-        .status(200)
-        .json({ message: "Customer successfully registered. Now you can login." });
+      return res.status(200).json({
+        message: "Customer successfully registered. Now you can login.",
+      });
     } else {
       return res.status(404).json({ message: "Customer already exists!" });
     }
@@ -22,39 +28,59 @@ public_users.post("/register", (req, res) => {
   return res.status(404).json({ message: "Unable to register customer." });
 });
 
-// Get the book list available in the shop
-public_users.get("/", function (req, res) {
-  res.send(JSON.stringify(books, null, 4));
+// Get the book list available in the shop asynchronously
+public_users.get("/", async function (req, res) {
+  await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      res.send(books);
+      resolve();
+    }, 2000);
+  });
 });
 
-// Get book details based on ISBN
-public_users.get("/isbn/:isbn", function (req, res) {
+// Get book details based on ISBN asynchronously
+public_users.get("/isbn/:isbn", async function (req, res) {
   const isbn = req.params.isbn;
-  res.send(books[isbn]);
+  await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      res.send(books[isbn]);
+      resolve();
+    }, 2000);
+  });
 });
 
-// Get book details based on author
-public_users.get("/author/:author", function (req, res) {
+// Get book details based on author asynchronously
+public_users.get("/author/:author", async function (req, res) {
   const author = req.params.author;
-  const booksToReturn = [];
-  for (const property in books) {
-    if (books[property].author === author) {
-      booksToReturn.push(books[property]);
-    }
-  }
-  res.send(booksToReturn);
+  await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const booksToReturn = [];
+      for (const property in books) {
+        if (books[property].author === author) {
+          booksToReturn.push(books[property]);
+        }
+      }
+      res.send(booksToReturn);
+      resolve();
+    }, 2000);
+  });
 });
 
-// Get all books based on title
-public_users.get("/title/:title", function (req, res) {
+// Get all books based on title asynchronously
+public_users.get("/title/:title", async function (req, res) {
   const title = req.params.title;
-  const booksToReturn = [];
-  for (const property in books) {
-    if (books[property].title === title) {
-      booksToReturn.push(books[property]);
-    }
-  }
-  res.send(booksToReturn);
+  await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const booksToReturn = [];
+      for (const property in books) {
+        if (books[property].title === title) {
+          booksToReturn.push(books[property]);
+        }
+      }
+      res.send(booksToReturn);
+      resolve();
+    }, 2000);
+  });
 });
 
 //  Get book review
